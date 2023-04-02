@@ -1,30 +1,33 @@
 import requests
 from bs4 import BeautifulSoup
+print("Please input your desired kijiji link: ")
+usrinput = input("Input: ")
+if "kijiji.ca" not in usrinput:
+    print("Invalid Kijiji link!")
+    quit()
+url = usrinput
+page = requests.get(url)
 
-# div class "C1_dkKeNHYB"
-link = "https://www.kijiji.ca/b-entertainment/city-of-toronto/c165l1700273"
-re = requests.get(link)
-soup = BeautifulSoup(re.content, "html.parser")
-results = soup.find(id="mainPageContent")
-specificresults = soup.find("main")
-printed_links = set()
+soup = BeautifulSoup(page.content, "html.parser")
+# search main
+ad_table = soup.find("main")
+# search in main, div top feature
+div_ad_elems = ad_table.find_all("div", class_="info")
 
-# prints titles of ads
-def find_and_print_listing():
-    for resultats in results.find_all("div", class_="container-results large-images"):
-        find_titles = results.find("a", class_="title")
-        if find_titles is not None:
-            print(find_titles.text.strip())
-        get_desc = results.find("td", class_="description")
-        if get_desc is not None:
-            print(get_desc.text.strip())
-        get_ad_link = find_titles.get("href")
-        if get_ad_link is not None and get_ad_link not in printed_links:
-            print(get_ad_link)
-            printed_links.add(get_ad_link)
-        all_ads = [all_ads.strip() for all_ads in resultats.text.replace("\t", "").replace("\n", "").split()]
-        for i in all_ads:
-            print(i)
-        
-
-find_and_print_listing()
+def table_print():
+    counter = 1
+    for div_ad_elem in div_ad_elems:
+        title = div_ad_elem.find("div", class_="title").text.strip()
+        description = div_ad_elem.find("div", class_="description").text.strip()
+        price = div_ad_elem.find("div", class_="price").text.strip()
+        location = div_ad_elem.find("div", class_="location").text.strip()
+        link = ad_table.find("div", class_="search-item")["data-vip-url"]
+        print("Title: ", title)
+        print("Description: ", description)
+        print("Price: ", price)
+        print("Link: ", link)
+        print("Ad Number: ", counter)
+        print("Location: ", location)
+        counter = counter + 1
+        print()
+table_print()
