@@ -8,20 +8,23 @@ soup = BeautifulSoup(re.content, "html.parser")
 results = soup.find(id="mainPageContent")
 specificresults = soup.find("main")
 printed_links = set()
+
 # prints titles of ads
 def find_and_print_listing():
     for resultats in results.find_all("div", class_="container-results large-images"):
-        find_titles = resultats.find("a", class_="title")
+        find_titles = results.find("a", class_="title")
         if find_titles is not None:
             print(find_titles.text.strip())
-        get_desc = resultats.find("td", class_="description")
+        get_desc = results.find("td", class_="description")
         if get_desc is not None:
             print(get_desc.text.strip())
         get_ad_link = find_titles.get("href")
         if get_ad_link is not None and get_ad_link not in printed_links:
             print(get_ad_link)
+            printed_links.add(get_ad_link)
+        all_ads = [all_ads.strip() for all_ads in resultats.text.replace("\t", "").replace("\n", "").split()]
+        for i in all_ads:
+            print(i)
+        
 
-        printed_links.add(get_ad_link)
-
-        print()
 find_and_print_listing()
