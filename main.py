@@ -1,6 +1,5 @@
 import requests
 from bs4 import BeautifulSoup
-import webbrowser
 try:
     print("Please input your desired kijiji link: ")
 
@@ -9,7 +8,7 @@ try:
     if "kijiji.ca" not in usrinput:
         print("Invalid Kijiji link!")
         quit()
-except requests.exceptions.MissingSchema:
+except requests.RequestException:
     print("Invalid URL!")
     
 
@@ -23,7 +22,6 @@ ad_table = soup.find("main")
 div_ad_elems = ad_table.find_all("div", class_="info")
 
 
-
 def table_print(counter):
     for div_ad_elem in div_ad_elems:
         title = div_ad_elem.find("div", class_="title").text.strip()
@@ -31,6 +29,7 @@ def table_print(counter):
         price = div_ad_elem.find("div", class_="price").text.strip()
         location = div_ad_elem.find("div", class_="location").text.strip()
         link = div_ad_elem.find("a", class_="title")["href"]
+        print("\n")
         print("Title: ", title)
         print("Description: ", description)
         print("Price: ", price)
@@ -39,4 +38,6 @@ def table_print(counter):
         print("Location: ", location)
         counter = counter + 1
         print()
+        
 table_print(1)
+
