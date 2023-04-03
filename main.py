@@ -24,8 +24,7 @@ div_ad_elems = ad_table.find_all("div", class_="info")
 
 
 
-def table_print():
-    counter = 1
+def table_print(counter):
     for div_ad_elem in div_ad_elems:
         title = div_ad_elem.find("div", class_="title").text.strip()
         description = div_ad_elem.find("div", class_="description").text.strip()
@@ -38,7 +37,6 @@ def table_print():
         print("Link: ", "https://kijiji.ca" + link)
         print("Ad Number: ", counter)
         print("Location: ", location)
-        
         counter = counter + 1
         print()
-table_print()
+table_print(1)
