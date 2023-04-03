@@ -1,10 +1,18 @@
 import requests
 from bs4 import BeautifulSoup
-print("Please input your desired kijiji link: ")
-usrinput = input("Input: ")
-if "kijiji.ca" not in usrinput:
-    print("Invalid Kijiji link!")
-    quit()
+import webbrowser
+try:
+    print("Please input your desired kijiji link: ")
+
+    usrinput = input("Input: ")
+
+    if "kijiji.ca" not in usrinput:
+        print("Invalid Kijiji link!")
+        quit()
+except requests.exceptions.MissingSchema:
+    print("Invalid URL!")
+    
+
 url = usrinput
 page = requests.get(url)
 
@@ -25,7 +33,7 @@ def table_print():
         print("Title: ", title)
         print("Description: ", description)
         print("Price: ", price)
-        print("Link: ", link)
+        print("Link: ", "https://kijiji.ca" + link)
         print("Ad Number: ", counter)
         print("Location: ", location)
         counter = counter + 1
